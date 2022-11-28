@@ -1,0 +1,17 @@
+.player-items-container {
+  display: flex;
+  /* justify-content: center; */
+  gap: 0.8rem;
+  flex-grow: 1;
+  overflow-x: scroll;
+}
+
+.stat-label-container {
+  background-color: #2c3d73;
+  color: white;
+}
+
+.main-container {
+  display: flex;
+  margin-top: 20px;
+}

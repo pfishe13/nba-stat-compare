@@ -1,0 +1,14 @@
+<!-- <button (click)="clickButton()"></button> -->
+<form class="add-form" *ngIf="showAddTask" (ngSubmit)="onSubmit()">
+  <div class="form-control">
+    <label for="playerName">Enter Player Name</label>
+    <input
+      type="playerName"
+      name="playerName"
+      [(ngModel)]="playerName"
+      id="playerName"
+      placeholder="LeBron James"
+    />
+    <input class="submit-btn" type="submit" value="Add Player" />
+  </div>
+</form>

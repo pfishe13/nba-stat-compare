@@ -1,0 +1,20 @@
+<app-add-player-form (onAddPlayer)="addPlayer($event)"></app-add-player-form>
+<div class="main-container">
+  <div class="stat-label-container item-container" *ngIf="players.length > 0">
+    <h4>Name</h4>
+    <h3>PPG</h3>
+    <h3>RPG</h3>
+    <h3>APG</h3>
+    <h3>SPG</h3>
+    <h3>FG%</h3>
+    <h3>3P%</h3>
+  </div>
+  <div class="player-items-container">
+    <app-player-item
+      *ngFor="let player of players"
+      [player]="player"
+      (onDeletePlayer)="deletePlayer(player)"
+    >
+    </app-player-item>
+  </div>
+</div>
