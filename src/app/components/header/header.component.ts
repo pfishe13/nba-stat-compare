@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  showAddTask: boolean = false;
+  showAddTask: boolean = true;
   subscription!: Subscription;
 
   constructor(private utilityService: UtilityService) {

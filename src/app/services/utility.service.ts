@@ -8,7 +8,7 @@ import { AnimateTimings } from '@angular/animations';
 })
 export class UtilityService {
   constructor(private http: HttpClient) {}
-  private showAddTask: boolean = false;
+  private showAddTask: boolean = true;
   private subject = new Subject<any>();
 
   toggleAddTask(): void {

@@ -14,7 +14,7 @@ export class AddPlayerFormComponent implements OnInit {
   playerID!: any;
   @Output() onBtnClick = new EventEmitter();
   @Output() onAddPlayer = new EventEmitter();
-  showAddTask!: boolean;
+  showAddTask: boolean = true;
   subscription: Subscription;
 
   constructor(
@@ -30,7 +30,6 @@ export class AddPlayerFormComponent implements OnInit {
 
   clickButton() {
     console.log('Button clicked');
-    // this.utilityService.getPlayerStats();
   }
 
   async onSubmit() {
@@ -43,14 +42,9 @@ export class AddPlayerFormComponent implements OnInit {
     const player$ = await this.http.get<any>(specificUrl);
     let playerArray = await lastValueFrom(player$);
     playerArray = playerArray.data;
-    // console.log(`Player array`, playerArray);
     this.playerID = playerArray[0].id;
     const first_name = playerArray[0].first_name;
     const last_name = playerArray[0].last_name;
-    // console.log(
-    //   'No issues, I will wait until promise is resolved..',
-    //   this.playerID
-    // );
 
     const playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
     const playerGameStatistics$ = await this.http.get<any>(
@@ -69,7 +63,6 @@ export class AddPlayerFormComponent implements OnInit {
         playerGameStatistics
       );
 
-      console.log(newPlayer);
       this.onAddPlayer.emit(newPlayer);
     }
 
@@ -127,7 +120,6 @@ function createPlayerObject(first: string, last: string, gameArray: []) {
     0
   );
   const avgFGPercent = fgMade / fgAttemps;
-  console.log(avgFGPercent);
 
   // 3pt percentage
   const fg3Attemps = gameArray.reduce(
