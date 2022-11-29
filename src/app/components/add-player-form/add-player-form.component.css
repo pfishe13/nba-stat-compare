@@ -4,4 +4,5 @@ label {
 
 .submit-btn {
   background-color: #fdaa02;
+  -webkit-appearance: none;
 }

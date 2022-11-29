@@ -24,6 +24,7 @@ h4 {
   overflow: auto;
   height: 100vh;
   padding: 20px;
+  padding-top: 15px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -47,7 +48,6 @@ h4 {
 
 .form-control label {
   display: block;
-  margin-left: 5px;
 }
 
 .form-control input,
