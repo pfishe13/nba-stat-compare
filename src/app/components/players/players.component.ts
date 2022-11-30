@@ -28,7 +28,9 @@ export class PlayersComponent implements OnInit {
   }
 
   deletePlayer(player: Player) {
-    console.log(`Deleting ${player}`);
+    this.players = this.players.filter(
+      (item) => item.first_name !== player.first_name
+    );
   }
 
   ngOnInit(): void {}
