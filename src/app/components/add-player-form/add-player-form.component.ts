@@ -1,9 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Player } from 'src/app/Player';
 import { UtilityService } from 'src/app/services/utility.service';
-import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 @Component({
   selector: 'app-add-player-form',
@@ -13,6 +11,7 @@ import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic
 export class AddPlayerFormComponent implements OnInit {
   playerName!: string;
   playerID!: any;
+  errorMessage!: string;
   @Output() onBtnClick = new EventEmitter();
   @Output() onAddPlayer = new EventEmitter();
   showAddTask: boolean = true;
@@ -31,12 +30,13 @@ export class AddPlayerFormComponent implements OnInit {
 
   async onSubmit() {
     if (!this.playerName) {
-      alert('Please add a player');
+      this.errorMessage = 'Please add a player';
       return;
     }
 
     let names = await parseName(this.playerName);
     let playerObject: any = await this.findPlayer(names);
+    if (playerObject === undefined) return;
 
     this.playerID = playerObject.id;
     const first_name = playerObject.first_name;
@@ -46,7 +46,9 @@ export class AddPlayerFormComponent implements OnInit {
     playerGameStatistics = deleteEmptyGames(playerGameStatistics.data);
 
     if (playerGameStatistics.length === 0) {
-      alert('This player has never played a minute this season');
+      this.errorMessage = 'This player has not played this season';
+      this.playerName = '';
+      return;
     } else {
       const newPlayer = createPlayerObject(
         first_name,
@@ -57,6 +59,7 @@ export class AddPlayerFormComponent implements OnInit {
       this.onAddPlayer.emit(newPlayer);
     }
 
+    this.errorMessage = '';
     this.playerName = '';
   }
 
@@ -73,6 +76,7 @@ export class AddPlayerFormComponent implements OnInit {
       const player$ = await this.http.get<any>(specificUrl);
       playerArray = await lastValueFrom(player$);
     } catch {
+      this.errorMessage = 'Error finding player. Refine your search.';
       return;
     }
 
@@ -93,6 +97,11 @@ export class AddPlayerFormComponent implements OnInit {
               names[0].toLowerCase().charAt(1)
         );
         playerObject = filteredArray;
+      }
+      if (filteredArray === undefined) {
+        this.errorMessage =
+          'Too many results. Please make your search more specific';
+        return;
       }
     } else {
       playerObject = playerArray[0];

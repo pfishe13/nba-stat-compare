@@ -1,7 +1,10 @@
 <!-- <button (click)="clickButton()"></button> -->
 <form class="add-form" *ngIf="showAddTask" (ngSubmit)="onSubmit()">
   <div class="form-control">
-    <label for="playerName">Enter Player Name</label>
+    <label for="playerName"
+      >Enter Player Name
+      <span class="span-error">{{ errorMessage }}</span></label
+    >
     <input
       type="playerName"
       name="playerName"

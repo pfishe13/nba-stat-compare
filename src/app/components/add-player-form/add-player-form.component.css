@@ -6,3 +6,8 @@ label {
   background-color: #fdaa02;
   -webkit-appearance: none;
 }
+
+.span-error {
+  margin-left: 6px;
+  color: #f24405;
+}
