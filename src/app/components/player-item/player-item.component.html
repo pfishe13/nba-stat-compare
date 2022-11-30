@@ -1,5 +1,10 @@
 <div class="player-container item-container">
-  <h4 (click)="deletePlayer(player)">{{ player.first_name }}</h4>
+  <span (click)="deletePlayer(player)">
+    <h4 class="name">
+      {{ player.first_name }}
+    </h4>
+    <h4 class="remove"><fa-icon [icon]="faTimes"></fa-icon></h4>
+  </span>
   <h3>{{ player.points }}</h3>
   <h3>{{ player.rebounds }}</h3>
   <h3>{{ player.assists }}</h3>

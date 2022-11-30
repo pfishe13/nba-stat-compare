@@ -3,6 +3,7 @@ import { lastValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Player } from 'src/app/Player';
 import { UtilityService } from 'src/app/services/utility.service';
+import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 @Component({
   selector: 'app-add-player-form',
@@ -28,30 +29,20 @@ export class AddPlayerFormComponent implements OnInit {
 
   private playersUrl = 'https://www.balldontlie.io/api/v1/players';
 
-  clickButton() {
-    console.log('Button clicked');
-  }
-
   async onSubmit() {
     if (!this.playerName) {
       alert('Please add a player');
       return;
     }
 
-    const specificUrl = `${this.playersUrl}?search=${this.playerName}`;
-    const player$ = await this.http.get<any>(specificUrl);
-    let playerArray = await lastValueFrom(player$);
-    playerArray = playerArray.data;
-    this.playerID = playerArray[0].id;
-    const first_name = playerArray[0].first_name;
-    const last_name = playerArray[0].last_name;
+    let names = await parseName(this.playerName);
+    let playerObject: any = await this.findPlayer(names);
 
-    const playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
-    const playerGameStatistics$ = await this.http.get<any>(
-      playerGameStatisticsUrl
-    );
-    let playerGameStatistics = await lastValueFrom(playerGameStatistics$);
+    this.playerID = playerObject.id;
+    const first_name = playerObject.first_name;
+    const last_name = playerObject.last_name;
 
+    let playerGameStatistics: any = await this.getPlayerStats(this.playerID);
     playerGameStatistics = deleteEmptyGames(playerGameStatistics.data);
 
     if (playerGameStatistics.length === 0) {
@@ -68,7 +59,71 @@ export class AddPlayerFormComponent implements OnInit {
 
     this.playerName = '';
   }
+
+  clickButton() {
+    console.log('Button clicked');
+  }
+
+  async findPlayer(names: string[]) {
+    let playerArray;
+    let playerObject;
+
+    try {
+      const specificUrl = `${this.playersUrl}?search=${names[2]}&per_page=100`;
+      const player$ = await this.http.get<any>(specificUrl);
+      playerArray = await lastValueFrom(player$);
+    } catch {
+      return;
+    }
+
+    playerArray = playerArray.data;
+
+    if (playerArray.length > 1) {
+      let filteredArray = playerArray.find(
+        (item: any) => item.first_name.toLowerCase() === names[0].toLowerCase()
+      );
+      playerObject = filteredArray;
+
+      if (filteredArray === undefined) {
+        filteredArray = playerArray.find(
+          (item: any) =>
+            item.first_name.toLowerCase().charAt(0) ===
+              names[0].toLowerCase().charAt(0) &&
+            item.first_name.toLowerCase().charAt(1) ===
+              names[0].toLowerCase().charAt(1)
+        );
+        playerObject = filteredArray;
+      }
+    } else {
+      playerObject = playerArray[0];
+    }
+    return playerObject;
+  }
+
+  async getPlayerStats(id: number) {
+    const playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
+    const playerGameStatistics$ = await this.http.get<any>(
+      playerGameStatisticsUrl
+    );
+
+    let playerGameStatistics = await lastValueFrom(playerGameStatistics$);
+    return playerGameStatistics;
+  }
+
   ngOnInit(): void {}
+}
+
+function parseName(name: string) {
+  let nameArray = name.split(' ');
+  let searchName;
+
+  if (nameArray[1] === undefined) {
+    searchName = nameArray[0];
+  } else {
+    searchName = nameArray[1];
+  }
+
+  return [nameArray[0], nameArray[1], searchName];
 }
 
 function deleteEmptyGames(gameArray: []) {

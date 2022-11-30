@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Player } from '../../Player';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-player-item',
@@ -9,6 +10,7 @@ import { Player } from '../../Player';
 export class PlayerItemComponent implements OnInit {
   @Input() player!: Player;
   @Output() onDeletePlayer: EventEmitter<Player> = new EventEmitter();
+  faTimes = faTimes;
 
   constructor() {}
 

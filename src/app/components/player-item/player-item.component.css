@@ -1,1 +1,11 @@
+span .remove {
+  display: none;
+}
 
+span:hover .name {
+  display: none;
+}
+
+span:hover .remove {
+  display: inline;
+}
