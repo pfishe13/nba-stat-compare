@@ -100,10 +100,19 @@ export class AddPlayerFormComponent implements OnInit {
       }
       if (filteredArray === undefined) {
         this.errorMessage =
-          'Too many results. Please make your search more specific';
+          'Too many or no results found. Please make your search more specific';
         return;
       }
-    } else {
+    } else if (playerArray.length === 1) {
+      if (
+        playerArray[0].first_name.toLowerCase().charAt(0) !==
+          names[0].toLowerCase().charAt(0) ||
+        playerArray[0].first_name.toLowerCase().charAt(1) !==
+          names[0].toLowerCase().charAt(1)
+      ) {
+        this.errorMessage = 'No results found. Try again';
+        return;
+      }
       playerObject = playerArray[0];
     }
     return playerObject;
