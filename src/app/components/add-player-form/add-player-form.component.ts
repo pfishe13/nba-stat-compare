@@ -135,6 +135,10 @@ function parseName(name: string) {
   let nameArray = name.split(' ');
   let searchName;
 
+  if (nameArray.length === 3) {
+    nameArray[1] = `${nameArray[1]}+${nameArray[2]}`;
+  }
+
   if (nameArray[1] === undefined) {
     searchName = nameArray[0];
   } else {
