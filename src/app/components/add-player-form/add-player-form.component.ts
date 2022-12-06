@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UtilityService } from 'src/app/services/utility.service';
+import { NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-add-player-form',
@@ -12,6 +13,7 @@ export class AddPlayerFormComponent implements OnInit {
   playerName!: string;
   playerID!: any;
   errorMessage!: string;
+  careerStats: boolean = false;
   @Output() onBtnClick = new EventEmitter();
   @Output() onAddPlayer = new EventEmitter();
   showAddTask: boolean = true;
@@ -42,8 +44,25 @@ export class AddPlayerFormComponent implements OnInit {
     const first_name = playerObject.first_name;
     const last_name = playerObject.last_name;
 
-    let playerGameStatistics: any = await this.getPlayerStats(this.playerID);
-    playerGameStatistics = deleteEmptyGames(playerGameStatistics.data);
+    let playerGameStatistics: any = await this.getPlayerStats(this.playerID, 1);
+    let playerGameStatisticsData = playerGameStatistics.data;
+    // console.log(playerGameStatistics.meta);
+    // console.log(playerGameStatisticsData);
+
+    const numPages = playerGameStatistics.meta.total_pages;
+
+    for (let i = 2; i <= numPages; i++) {
+      let playerGameStatisticsAddition: any = await this.getPlayerStats(
+        this.playerID,
+        i
+      );
+      playerGameStatisticsData = playerGameStatisticsData.concat(
+        playerGameStatisticsAddition.data
+      );
+    }
+
+    playerGameStatistics = deleteEmptyGames(playerGameStatisticsData);
+    console.log(playerGameStatistics);
 
     if (playerGameStatistics.length === 0) {
       this.errorMessage = 'This player has not played this season';
@@ -118,8 +137,14 @@ export class AddPlayerFormComponent implements OnInit {
     return playerObject;
   }
 
-  async getPlayerStats(id: number) {
-    const playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
+  async getPlayerStats(id: number, pageNum: number = 1) {
+    let playerGameStatisticsUrl: string;
+    if (this.careerStats) {
+      playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?per_page=100&page=${pageNum}&postseason=false&player_ids[]=${this.playerID}`;
+    } else {
+      playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
+    }
+
     const playerGameStatistics$ = await this.http.get<any>(
       playerGameStatisticsUrl
     );
@@ -148,9 +173,18 @@ function parseName(name: string) {
   return [nameArray[0], nameArray[1], searchName];
 }
 
-function deleteEmptyGames(gameArray: []) {
+function deleteEmptyGames(gameArray: any[]) {
   return gameArray.filter((game) => {
-    return game['min'] !== '00';
+    if (
+      game['min'] === '00' ||
+      game['min'] === '' ||
+      game['min'] === '0' ||
+      game['min'] === null
+    ) {
+      return;
+    } else {
+      return game;
+    }
   });
 }
 
