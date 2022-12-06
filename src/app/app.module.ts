@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +29,8 @@ import { ButtonComponent } from './components/button/button.component';
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
+    MatButtonModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 * {
   box-sizing: border-box;
@@ -88,6 +89,11 @@ h4 {
   padding: 10px 20px;
   margin: 5px;
   border-radius: 5px;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 24px !important;
+  color: #031059 !important;
 }
 
 @media only screen and (min-width: 800px) {
