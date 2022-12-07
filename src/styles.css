@@ -114,6 +114,7 @@ h4 {
 
 @media only screen and (max-width: 500px) {
   .item-container {
-    gap: 0.2rem;
+    gap: 0rem;
+    padding: 10px 12px;
   }
 }
