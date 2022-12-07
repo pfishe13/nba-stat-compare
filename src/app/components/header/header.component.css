@@ -8,3 +8,15 @@ header {
   justify-content: space-between;
   align-items: center;
 }
+
+@media only screen and (max-width: 500px) {
+  header {
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+}

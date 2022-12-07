@@ -1,10 +1,12 @@
 <app-header (clearPlayerArray)="clearPlayers()"></app-header>
-<app-add-player-form (onAddPlayer)="addPlayer($event)"></app-add-player-form>
-<app-button
-  color="{{ showAddTask ? '#F2836B' : '#F24405' }}"
-  text="{{ showAddTask ? 'Close' : 'Add Player' }}"
-  (btnClick)="toggleAddTask()"
-></app-button>
+<div class="form-container">
+  <app-add-player-form (onAddPlayer)="addPlayer($event)"></app-add-player-form>
+  <app-button
+    color="{{ showAddTask ? '#F2836B' : '#F24405' }}"
+    text="{{ showAddTask ? 'Close' : 'Add Player' }}"
+    (btnClick)="toggleAddTask()"
+  ></app-button>
+</div>
 <div class="main-container">
   <div class="stat-label-container item-container" *ngIf="players.length > 0">
     <h4>Name</h4>
