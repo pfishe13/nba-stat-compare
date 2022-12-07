@@ -92,8 +92,17 @@ h4 {
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  font-family: "Poppins", sans-serif;
   line-height: 24px !important;
-  color: #031059 !important;
+}
+
+.mat-button-toggle-checked {
+  background-color: #60a561 !important;
+  color: #f2f2f2 !important;
+}
+
+.mat-button-toggle-appearance-standard {
+  color: rgb(136, 136, 136);
 }
 
 @media only screen and (min-width: 800px) {

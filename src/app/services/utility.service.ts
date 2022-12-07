@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { AnimateTimings } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +8,25 @@ import { AnimateTimings } from '@angular/animations';
 export class UtilityService {
   constructor(private http: HttpClient) {}
   private showAddTask: boolean = true;
-  private subject = new Subject<any>();
+  private careerStats: boolean = false;
+  private subject1 = new Subject<any>();
+  private subject2 = new Subject<any>();
 
   toggleAddTask(): void {
     this.showAddTask = !this.showAddTask;
-    this.subject.next(this.showAddTask);
+    this.subject1.next(this.showAddTask);
+  }
+
+  toggleCareerStats(): void {
+    this.careerStats = !this.careerStats;
+    this.subject2.next(this.careerStats);
   }
 
   onToggle(): Observable<any> {
-    return this.subject.asObservable();
+    return this.subject1.asObservable();
+  }
+
+  onToggleCareerStats(): Observable<any> {
+    return this.subject2.asObservable();
   }
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UtilityService } from 'src/app/services/utility.service';
 
 @Component({
   selector: 'app-header',
@@ -6,7 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  careerToggle: boolean = false;
+  subscription!: Subscription;
+  @Output() clearPlayerArray = new EventEmitter();
+
+  constructor(private utilityService: UtilityService) {
+    this.subscription = this.utilityService
+      .onToggle()
+      .subscribe((value) => (this.careerToggle = value));
+  }
+
+  toggleCareerStats() {
+    console.log('Emit clear player array function');
+    this.clearPlayerArray.emit();
+    this.utilityService.toggleCareerStats();
+  }
 
   ngOnInit(): void {}
 }

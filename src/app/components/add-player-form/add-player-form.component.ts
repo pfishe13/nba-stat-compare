@@ -13,11 +13,11 @@ export class AddPlayerFormComponent implements OnInit {
   playerName!: string;
   playerID!: any;
   errorMessage!: string;
-  careerStats: boolean = false;
   @Output() onBtnClick = new EventEmitter();
   @Output() onAddPlayer = new EventEmitter();
   showAddTask: boolean = true;
   subscription: Subscription;
+  careerStats: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -26,11 +26,17 @@ export class AddPlayerFormComponent implements OnInit {
     this.subscription = this.utilityService
       .onToggle()
       .subscribe((value) => (this.showAddTask = value));
+
+    this.subscription = this.utilityService
+      .onToggleCareerStats()
+      .subscribe((value) => (this.careerStats = value));
   }
 
   private playersUrl = 'https://www.balldontlie.io/api/v1/players';
 
   async onSubmit() {
+    console.log(`Career Stats Value: ${this.careerStats}`);
+
     if (!this.playerName) {
       this.errorMessage = 'Please add a player';
       return;
@@ -140,8 +146,10 @@ export class AddPlayerFormComponent implements OnInit {
   async getPlayerStats(id: number, pageNum: number = 1) {
     let playerGameStatisticsUrl: string;
     if (this.careerStats) {
+      console.log('career stats');
       playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?per_page=100&page=${pageNum}&postseason=false&player_ids[]=${this.playerID}`;
     } else {
+      console.log('season stats');
       playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
     }
 
