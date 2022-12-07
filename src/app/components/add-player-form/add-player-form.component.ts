@@ -35,8 +35,6 @@ export class AddPlayerFormComponent implements OnInit {
   private playersUrl = 'https://www.balldontlie.io/api/v1/players';
 
   async onSubmit() {
-    console.log(`Career Stats Value: ${this.careerStats}`);
-
     if (!this.playerName) {
       this.errorMessage = 'Please add a player';
       return;
@@ -52,8 +50,6 @@ export class AddPlayerFormComponent implements OnInit {
 
     let playerGameStatistics: any = await this.getPlayerStats(this.playerID, 1);
     let playerGameStatisticsData = playerGameStatistics.data;
-    // console.log(playerGameStatistics.meta);
-    // console.log(playerGameStatisticsData);
 
     const numPages = playerGameStatistics.meta.total_pages;
 
@@ -68,7 +64,6 @@ export class AddPlayerFormComponent implements OnInit {
     }
 
     playerGameStatistics = deleteEmptyGames(playerGameStatisticsData);
-    console.log(playerGameStatistics);
 
     if (playerGameStatistics.length === 0) {
       this.errorMessage = 'This player has not played this season';
@@ -86,10 +81,6 @@ export class AddPlayerFormComponent implements OnInit {
 
     this.errorMessage = '';
     this.playerName = '';
-  }
-
-  clickButton() {
-    console.log('Button clicked');
   }
 
   async findPlayer(names: string[]) {
@@ -146,10 +137,8 @@ export class AddPlayerFormComponent implements OnInit {
   async getPlayerStats(id: number, pageNum: number = 1) {
     let playerGameStatisticsUrl: string;
     if (this.careerStats) {
-      console.log('career stats');
       playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?per_page=100&page=${pageNum}&postseason=false&player_ids[]=${this.playerID}`;
     } else {
-      console.log('season stats');
       playerGameStatisticsUrl = `https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=${this.playerID}`;
     }
 

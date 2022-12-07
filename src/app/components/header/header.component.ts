@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleCareerStats() {
-    console.log('Emit clear player array function');
     this.clearPlayerArray.emit();
     this.utilityService.toggleCareerStats();
   }

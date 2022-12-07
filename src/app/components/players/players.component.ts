@@ -34,7 +34,6 @@ export class PlayersComponent implements OnInit {
   }
 
   clearPlayers() {
-    console.log('Toggling in players.ts');
     this.players = [];
   }
 
