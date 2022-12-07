@@ -15,6 +15,7 @@ body {
   color: #031059;
   overflow: hidden;
   position: relative;
+  height: 100vh;
 }
 
 h3,
