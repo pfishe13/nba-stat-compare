@@ -1,5 +1,5 @@
 <app-header (clearPlayerArray)="clearPlayers()"></app-header>
-<div class="form-container">
+<div class="form-container" [ngClass]="{ 'form-open': showAddTask }">
   <app-add-player-form (onAddPlayer)="addPlayer($event)"></app-add-player-form>
   <app-button
     color="{{ showAddTask ? '#F2836B' : '#F24405' }}"
