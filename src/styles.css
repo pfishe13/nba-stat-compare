@@ -14,6 +14,7 @@ body {
   background-color: #f2f2f2;
   color: #031059;
   overflow: hidden;
+  position: relative;
 }
 
 h3,
